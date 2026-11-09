@@ -4,7 +4,8 @@ import "../css/ProductForm.css"
 function ProductForm({ 
     onAgregarProducto,
     productoEditar,
-    onEditarProducto
+    onEditarProducto,
+    onCancelarEdicion
 }) {
     const [formData, setFormData] = useState({
         nombre: '',
@@ -22,6 +23,15 @@ function ProductForm({
     }
 
     const handleSubmit = (e) => {
+        if (
+            !formData.nombre.trim() ||
+            !formData.precio ||
+            !formData.categoria.trim() ||
+            !formData.stock
+        ) {
+            alert('Todos los campos son obligatorios.')
+            return
+        }
         e.preventDefault();
         
         const nuevoProducto = {
@@ -57,9 +67,20 @@ function ProductForm({
         }
     }, [productoEditar]);
 
+    useEffect(() => {
+        if (productoEditar === null) {
+            setFormData({
+                nombre: '',
+                precio: '',
+                categoria: '',
+                stock: ''
+            });
+        }
+    }, [productoEditar]);
+
     return (
         <section className="form-section">
-            <h2>Agregar nuevo Producto</h2>
+            <h2>{productoEditar ? 'Editar' : 'Agregar'} producto</h2>
 
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -107,7 +128,14 @@ function ProductForm({
                     /> 
                 </div>
                 <div>
-                    <button type="submit">Agregar Producto</button>
+                    <button type="submit">
+                        {productoEditar ? 'Guardar cambios' : 'Agregar producto'}
+                    </button>
+                    {productoEditar && (
+                        <button type="button" onClick={onCancelarEdicion}>
+                            Cancelar edición
+                        </button>
+                    )}
                 </div>
             </form>
         </section>

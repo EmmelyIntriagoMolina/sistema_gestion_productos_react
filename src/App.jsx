@@ -28,7 +28,17 @@ function App() {
         )
     );
     setProductoEditar(null);
-  };
+  }
+
+  const eliminarProducto = (id) => {
+    setProductos((prevProductos) =>
+        prevProductos.filter((producto) => producto.id !== id)
+    );
+  }
+
+  const cancelarEdicion = () => {
+    setProductoEditar(null)
+  }
 
   return ( 
     <main className="app-container">
@@ -42,10 +52,12 @@ function App() {
           onAgregarProducto={agregarProducto}
           productoEditar={productoEditar}
           onEditarProducto={actualizarProducto}
+          onCancelarEdicion={cancelarEdicion}
         />
         <ProductList 
           products={productos} 
           onEditarProducto={seleccionarProducto}
+          onEliminarProducto={eliminarProducto}
         />
       </div>
     </main>

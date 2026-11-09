@@ -1,7 +1,7 @@
 import { useState } from "react"
 import "../css/ProductList.css"
 
-function ProductList({ products, onEditarProducto }) {
+function ProductList({ products, onEditarProducto, onEliminarProducto }) {
     const [busqueda, setBusqueda] = useState('')
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('');
 
@@ -49,6 +49,19 @@ function ProductList({ products, onEditarProducto }) {
 
                             <button onClick={() => onEditarProducto(producto)}>
                                 Editar
+                            </button>
+
+                            <button 
+                                onClick={() => {
+                                    const confirmar = window.confirm(
+                                        `¿Estás segura de eliminar ${producto.nombre}?`
+                                    );
+                                    if (confirmar) {
+                                        onEliminarProducto(producto.id);
+                                    }
+                                }}
+                            >
+                                Eliminar
                             </button>
                         </li>
                     ))}
