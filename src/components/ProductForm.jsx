@@ -1,7 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import "../css/ProductForm.css"
 
-function ProductForm({ onAgregarProducto}) {
+function ProductForm({ 
+    onAgregarProducto,
+    productoEditar,
+    onEditarProducto
+}) {
     const [formData, setFormData] = useState({
         nombre: '',
         precio: '',
@@ -21,15 +25,19 @@ function ProductForm({ onAgregarProducto}) {
         e.preventDefault();
         
         const nuevoProducto = {
-            id: Date.now(),
+            id: productoEditar ? productoEditar.id : Date.now(),
             nombre: formData.nombre,
             precio: Number(formData.precio),
             categoria: formData.categoria,
             stock: Number(formData.stock)
-        };
-    
-        onAgregarProducto(nuevoProducto);
-    
+        }
+
+        if (productoEditar) {
+            onEditarProducto(nuevoProducto)
+        } else {
+            onAgregarProducto(nuevoProducto)
+        }
+        
         setFormData({
             nombre: '',
             precio: '',
@@ -37,6 +45,17 @@ function ProductForm({ onAgregarProducto}) {
             stock: ''
         });
     }
+
+    useEffect(() => {
+        if (productoEditar) {
+            setFormData({
+                nombre: productoEditar.nombre,
+                precio: productoEditar.precio,
+                categoria: productoEditar.categoria,
+                stock: productoEditar.stock
+            });
+        }
+    }, [productoEditar]);
 
     return (
         <section className="form-section">
