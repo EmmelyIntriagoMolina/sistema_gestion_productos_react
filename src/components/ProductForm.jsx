@@ -23,6 +23,7 @@ function ProductForm({
     }
 
     const handleSubmit = (e) => {
+        //Validaciones
         if (
             !formData.nombre.trim() ||
             !formData.precio ||
@@ -32,6 +33,17 @@ function ProductForm({
             alert('Todos los campos son obligatorios.')
             return
         }
+        if (Number(formData.precio) <= 0) {
+            alert('El precio debe ser mayor que cero.');
+            return;
+        }
+        
+        if (Number(formData.stock) < 0) {
+            alert('El stock no puede ser negativo.');
+            return;
+        }
+
+
         e.preventDefault();
         
         const nuevoProducto = {
